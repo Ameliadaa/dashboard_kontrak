@@ -2,7 +2,7 @@
 'use client';
 
 import { useFormContext } from 'react-hook-form';
-import Button from "@/components/Button";
+
 
 interface FormData {
   name: string;
@@ -38,7 +38,7 @@ const ProfileForm = () => {
           {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
         </div>
 
-        {/* Email */}
+     
         <div>
           <label className="block text-sm font-medium text-gray-700">Email<span className="text-red-500">*</span></label>
           <input
@@ -53,7 +53,7 @@ const ProfileForm = () => {
           {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
         </div>
 
-        {/* Username */}
+       
         <div>
           <label className="block text-sm font-medium text-gray-700">Username<span className="text-red-500">*</span></label>
           <input
@@ -65,7 +65,7 @@ const ProfileForm = () => {
           {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
         </div>
 
-        {/* Phone */}
+  
         <div>
           <label className="block text-sm font-medium text-gray-700">Phone<span className="text-red-500">*</span></label>
           <input
@@ -96,7 +96,7 @@ const ProfileForm = () => {
           {errors.gender && <p className="text-red-500 text-sm">{errors.gender.message}</p>}
         </div>
 
-        {/* Birth Place */}
+   
         <div>
           <label className="block text-sm font-medium text-gray-700">Tempat Lahir</label>
           <input
@@ -107,7 +107,7 @@ const ProfileForm = () => {
           />
         </div>
 
-        {/* Birth Date */}
+    
         <div>
           <label className="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
           <input
@@ -120,7 +120,7 @@ const ProfileForm = () => {
         </div>
         
           <div className='space-y-4'>         
-        {/* Bank */}
+   
         <div>
           <label className="block text-sm font-medium text-gray-700">Bank</label>
           <select
@@ -135,7 +135,6 @@ const ProfileForm = () => {
           </select>
         </div>
 
-        {/* Bank Account */}
         <div>
           <label className="block text-sm font-medium text-gray-700">No Rekening</label>
           <input
@@ -146,7 +145,7 @@ const ProfileForm = () => {
           />
         </div>
 
-        {/* Status */}
+       
         <div>
           <label className="block text-sm font-medium text-gray-700">Status</label>
           <select
@@ -159,7 +158,7 @@ const ProfileForm = () => {
           </select>
         </div>
 
-        {/* Address */}
+
         <div>
           <label className="block text-sm font-medium text-gray-700">Alamat</label>
           <textarea
