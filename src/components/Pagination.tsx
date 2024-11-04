@@ -50,11 +50,11 @@ const Pagination: FC<PaginationProps> = ({
           >
             {"<"}
           </button>
-          <span>{currentPage}</span>
+          <span className="flex items-center">{currentPage}</span>
           <button
             onClick={() => setPage(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="p-2 border rounded"
+            className="p-2 border rounded "
           >
             {">"}
           </button>

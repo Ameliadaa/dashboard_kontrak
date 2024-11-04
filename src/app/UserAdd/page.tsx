@@ -1,11 +1,10 @@
-
-
 "use client";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
 import { api } from "@/lib/axios";
+import { useState } from "react";
 
 interface FormData {
   name: string;
@@ -44,19 +43,19 @@ const ProfileForm = () => {
   });
   const router = useRouter();
 
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const response = await api.post("/users", data);
-      if (response.status === 201) {
-        alert("User successfully added");
+      const response = await api.post("/users", data); 
+      if (response.status === 201) {      
         reset();
-        router.push("/");
+        router.push("/?success=true"); 
       } else {
         alert("Failed to add user");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Error occurred while adding user");
+      alert("An error occurred while adding user");
     }
   };
 
@@ -74,7 +73,7 @@ const ProfileForm = () => {
 
       <div className="flex flex-col lg:flex-row mt-6">
         <div className="w-full lg:w-3/4 bg-white rounded-lg shadow-md p-6 mr-0 lg:mr-4 mb-4 lg:mb-0 border border-gray-300">
-          <h2 className="text-xl font-semibold mb-4 border-b pb-2">Profile</h2>
+          <h2 className="text-xl font-semibold mb-4 border-b pb-2">Profile</h2>         
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div>

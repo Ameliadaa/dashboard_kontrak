@@ -38,9 +38,8 @@ const UserEdit = () => {
   const handleSave = methods.handleSubmit(async (data) => { 
     try {
       const response = await updateUser(String(id), data); 
-      if (response.status === 200) {
-        alert("User successfully updated");
-        router.push("/");
+      if (response.status === 200) {     
+        router.push("/?update=true");
       } else {
         alert("Failed to update user");
       }

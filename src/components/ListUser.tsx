@@ -22,26 +22,26 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await api.get<User[]>("/users");
-      console.log(response.data);
-      setUsers(response.data);
+      const response = await api.get<User[]>("/users"); 
+      console.log(response.data); 
+      setUsers(response.data); 
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching users:", error); 
     }
-  };
+  }; 
 
   const deleteUser = async (id: number) => {
     const confirmDelete = window.confirm(
-      "Apakah Anda yakin ingin menghapus pengguna ini?"
+      "Apakah Anda yakin ingin menghapus pengguna ini?"  
     );
     if (!confirmDelete) return;
 
     try {
       await api.delete(`/users/${id}`);
-      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id)); 
       alert("User berhasil dihapus.");
     } catch (error) {
-      console.error("Error deleting user:", error);
+      console.error("Error deleting user:", error); 
       alert("Gagal menghapus user.");
     }
   };
@@ -49,6 +49,7 @@ const UserManagement = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
+  
 
  
   const indexOfLastUser = currentPage * rowsPerPage;
@@ -89,7 +90,7 @@ const UserManagement = () => {
                   className={index % 2 === 0 ? "bg-gray-200" : ""}
                 >
                   <td className="py-2 px-4 border border-gray-300 text-center">
-                    {indexOfFirstUser + index + 1} {/* Display correct row number */}
+                    {indexOfFirstUser + index + 1} 
                   </td>
                   <td className="py-2 px-4 border border-gray-300">
                     {user.name}

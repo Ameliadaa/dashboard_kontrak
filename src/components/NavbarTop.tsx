@@ -17,13 +17,13 @@ const NavbarTop: React.FC<NavbarTopProps> = ({ toggleSidebar }) => {
 
   return (
     <nav className="bg-blue-900 text-white shadow-md">
-      <div className="flex items-center justify-between px-4 py-3">
+      <div className="flex items-center justify-between px-4 py-3"> 
       
         <div className="flex items-center space-x-3">
-          <button onClick={toggleSidebar} className="text-white">
+          <button onClick={toggleSidebar} className="text-white"> 
             <FaBars size={20} />
           </button>
-          <div className="hidden md:flex items-center bg-blue-700 rounded-md">
+          <div className="hidden md:flex items-center bg-blue-700 rounded-md"> 
             <FaSearch className="ml-2 text-gray-300" />
             <input
               type="text"

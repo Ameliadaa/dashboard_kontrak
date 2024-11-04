@@ -2,6 +2,7 @@ import { useFieldArray, Controller, useFormContext } from "react-hook-form";
 import { IoMdAdd } from "react-icons/io";
 import Button from "@/components/Button";
 import { useEffect, useState } from "react";
+import { FiTrash } from "react-icons/fi";
 
 interface ContractCardProps {
   contractIndex: number;
@@ -14,7 +15,7 @@ export default function ContractCard({
 }: ContractCardProps) {
   const { control, watch } = useFormContext();
   const [totalDeduction, setTotalDeduction] = useState(0);
-  const [totalIncome, setTotalIncome] = useState(0);
+  const [totalIncome, setTotalIncome] = useState(0); 
 
   const {
     fields: incomeFields,
@@ -135,9 +136,9 @@ export default function ContractCard({
           control={control}
           render={({ field }) => (
             <select {...field} className="w-full border p-2 rounded">
-              <option value="">Pilih Jenis Kontrak</option>
-              <option value="fulltime">Full Time</option>
-              <option value="parttime">Part Time</option>
+              <option value="">Pilih Jenis Kontrak</option> 
+              <option value="fulltime">Full Time</option> 
+              <option value="parttime">Part Time</option> 
             </select>
           )}
         />
@@ -165,15 +166,15 @@ export default function ContractCard({
             name={`contracts.${contractIndex}.healthBpjs`}
             control={control}
             render={({ field }) => (
-              <label className="flex items-center">
+              <label className="flex items-center"> 
                 <input
                   type="checkbox"
-                  checked={field.value || false}
+                  checked={field.value || false} 
                   onChange={(e) => field.onChange(e.target.checked)}
                   className="mr-2"
                 />
                 Kesehatan
-              </label>
+              </label> 
             )}
           />
           <Controller
@@ -298,15 +299,12 @@ export default function ContractCard({
                       />
                     )}
                   />
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <button
-                    type="button"
-                    onClick={() => removeIncome(incomeIndex)}
-                    className="text-red-500"
-                  >
-                    Hapus
-                  </button>
+                </td>               
+                <td className="px-6 py-4 whitespace-nowrap">             
+                  <FiTrash
+                        className="text-red-500 hover:text-red-700 cursor-pointer"
+                        onClick={() => removeIncome(incomeIndex)}
+                      />
                 </td>
               </tr>
             ))}
@@ -380,14 +378,11 @@ export default function ContractCard({
                     )}
                   />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <button
-                    type="button"
-                    onClick={() => removeDeduction(deductionIndex)}
-                    className="text-red-500"
-                  >
-                    Hapus
-                  </button>
+                <td className="px-6 py-4 whitespace-nowrap">             
+                  <FiTrash
+                        className="text-red-500 hover:text-red-700 cursor-pointer"
+                        onClick={() => removeDeduction(deductionIndex)}
+                      />
                 </td>
               </tr>
             ))}
