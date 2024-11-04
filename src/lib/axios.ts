@@ -42,13 +42,13 @@ export interface User {
 }
 
 
-// const api = axios.create({
-//   baseURL: 'https://mockoon.tongkolspace.com',
-// });
-
 const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: 'https://mockoon.tongkolspace.com',
 });
+
+// const api = axios.create({
+//   baseURL: 'http://localhost:3001',
+// });
 
 
 async function createUser(data: User): Promise<AxiosResponse<User>> {

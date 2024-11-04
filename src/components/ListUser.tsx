@@ -6,6 +6,8 @@ import { api } from "@/lib/axios";
 import Button from "./Button";
 import Link from "next/link";
 import Pagination from "./Pagination";
+import Swal from 'sweetalert2';
+
 
 interface User {
   id: number;
@@ -31,18 +33,33 @@ const UserManagement = () => {
   }; 
 
   const deleteUser = async (id: number) => {
-    const confirmDelete = window.confirm(
-      "Apakah Anda yakin ingin menghapus pengguna ini?"  
-    );
-    if (!confirmDelete) return;
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });  
 
-    try {
+    if (!result.isConfirmed) return;
+  
+    try {    
       await api.delete(`/users/${id}`);
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id)); 
-      alert("User berhasil dihapus.");
+      Swal.fire({
+        title: "Deleted!",
+        text: "User has been deleted successfully.",
+        icon: "success",
+      });
     } catch (error) {
       console.error("Error deleting user:", error); 
-      alert("Gagal menghapus user.");
+      Swal.fire({
+        title: "Error",
+        text: "Failed to delete user.",
+        icon: "error",
+      });
     }
   };
 

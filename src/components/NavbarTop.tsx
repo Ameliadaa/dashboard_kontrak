@@ -16,7 +16,7 @@ const NavbarTop: React.FC<NavbarTopProps> = ({ toggleSidebar }) => {
   const handleNotificationsToggle = () => setNotificationsOpen(!isNotificationsOpen);
 
   return (
-    <nav className="bg-blue-900 text-white shadow-md">
+    <nav className="bg-blue-900 text-white shadow-md fixed w-full top-0 z-50">
       <div className="flex items-center justify-between px-4 py-3"> 
       
         <div className="flex items-center space-x-3">

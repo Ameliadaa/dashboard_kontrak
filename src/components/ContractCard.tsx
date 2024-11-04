@@ -15,7 +15,11 @@ export default function ContractCard({
 }: ContractCardProps) {
   const { control, watch } = useFormContext();
   const [totalDeduction, setTotalDeduction] = useState(0);
-  const [totalIncome, setTotalIncome] = useState(0); 
+  const [totalIncome, setTotalIncome] = useState(0);
+
+  useEffect (  () =>  {
+
+  }, [totalIncome] )
 
   const {
     fields: incomeFields,
@@ -35,16 +39,18 @@ export default function ContractCard({
     name: `contracts.${contractIndex}.deductions`,
   });
 
-
   const incomes = watch(`contracts.${contractIndex}.incomes`);
   const deductions = watch(`contracts.${contractIndex}.deductions`);
+
+  
 
   const calculateTotal = (items: { nominal: number | "" }[]) => {
     return items?.reduce((acc, item) => acc + (Number(item.nominal) || 0), 0);
   };
 
+  console.log ( "its render",  incomes);
   useEffect(() => {
-    setTotalIncome(calculateTotal(incomes));
+        setTotalIncome(calculateTotal(incomes));
   }, [incomes]);
 
   useEffect(() => {
@@ -52,49 +58,58 @@ export default function ContractCard({
   }, [deductions]);
 
   return (
-  
-      <div className="grid grid-cols-2 gap-4 mb-4 p-4 border border-gray-300 rounded-md">  
+    <div className="grid grid-cols-2 gap-4 mb-4 p-4 border border-gray-300 rounded-md">
       <div>
-        <label className="block mb-1">Masa Berlaku<span className="text-red-500">*</span></label>
+        <label className="block mb-1">
+          Masa Berlaku<span className="text-red-500">*</span>
+        </label>
         <div className="flex space-x-2">
-        <div className="w-full">
-      <Controller
-        name={`contracts.${contractIndex}.startDate`}
-        control={control}
-        rules={{ required: "Tanggal mulai wajib diisi" }}
-        render={({ field, fieldState: { error } }) => (
-          <>
-            <input
-              {...field}
-              type="date"
-              className={`w-full border p-2 rounded ${error ? 'border-red-500' : 'border-gray-300'}`}
+          <div className="w-full">
+            <Controller
+              name={`contracts.${contractIndex}.startDate`}
+              control={control}
+              rules={{ required: "Tanggal mulai wajib diisi" }}
+              render={({ field, fieldState: { error } }) => (
+                <>
+                  <input
+                    {...field}
+                    type="date"
+                    className={`w-full border p-2 rounded ${
+                      error ? "border-red-500" : "border-gray-300"
+                    }`}
+                  />
+                  {error && (
+                    <p className="text-red-500 text-sm mt-1">{error.message}</p>
+                  )}
+                </>
+              )}
             />
-            {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
-          </>
-        )}
-      />
-    </div>
-    <span className="self-center">s.d</span>
-    <div className="w-full">
-      <Controller
-        name={`contracts.${contractIndex}.endDate`}
-        control={control}
-        rules={{ required: "Tanggal akhir wajib diisi" }}
-        render={({ field, fieldState: { error } }) => (
-          <>
-            <input
-              {...field}
-              type="date"
-              className={`w-full border p-2 rounded ${error ? 'border-red-500' : 'border-gray-300'}`}
+          </div>
+          <span className="self-center">s.d</span>
+          <div className="w-full">
+            <Controller
+              name={`contracts.${contractIndex}.endDate`}
+              control={control}
+              rules={{ required: "Tanggal akhir wajib diisi" }}
+              render={({ field, fieldState: { error } }) => (
+                <>
+                  <input
+                    {...field}
+                    type="date"
+                    className={`w-full border p-2 rounded ${
+                      error ? "border-red-500" : "border-gray-300"
+                    }`}
+                  />
+                  {error && (
+                    <p className="text-red-500 text-sm mt-1">{error.message}</p>
+                  )}
+                </>
+              )}
             />
-            {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
-          </>
-        )}
-      />
-    </div>
+          </div>
         </div>
       </div>
-            
+
       <div>
         <label className="block mb-1">Cuti Per Tahun</label>
         <Controller
@@ -103,32 +118,41 @@ export default function ContractCard({
           render={({ field }) => (
             <select {...field} className="w-full border p-2 rounded">
               <option value="">Pilih Cuti Tahunan</option>
-              <option value="12">12 Hari</option> 
-              <option value="14">14 Hari</option> 
+              <option value="12">12 Hari</option>
+              <option value="14">14 Hari</option>
             </select>
           )}
         />
       </div>
 
       <div>
-        <label className="block mb-1">Golongan Pajak<span className="text-red-500">*</span></label>
+        <label className="block mb-1">
+          Golongan Pajak<span className="text-red-500">*</span>
+        </label>
         <Controller
-    name={`contracts.${contractIndex}.taxType`}
-    control={control}
-    rules={{ required: "Golongan Pajak wajib diisi" }}
-    render={({ field, fieldState: { error } }) => (
-      <>
-        <select {...field} className={`w-full border p-2 rounded ${error ? 'border-red-500' : 'border-gray-300'}`}>
-          <option value="">Pilih Golongan Pajak</option>
-          <option value="A">A</option>
-          <option value="B">B</option>
-        </select>
-        {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
-      </>
-    )}
-  />
+          name={`contracts.${contractIndex}.taxType`}
+          control={control}
+          rules={{ required: "Golongan Pajak wajib diisi" }}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <select
+                {...field}
+                className={`w-full border p-2 rounded ${
+                  error ? "border-red-500" : "border-gray-300"
+                }`}
+              >
+                <option value="">Pilih Golongan Pajak</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+              </select>
+              {error && (
+                <p className="text-red-500 text-sm mt-1">{error.message}</p>
+              )}
+            </>
+          )}
+        />
       </div>
-                
+
       <div>
         <label className="block mb-1">Jenis Kontrak</label>
         <Controller
@@ -136,14 +160,14 @@ export default function ContractCard({
           control={control}
           render={({ field }) => (
             <select {...field} className="w-full border p-2 rounded">
-              <option value="">Pilih Jenis Kontrak</option> 
-              <option value="fulltime">Full Time</option> 
-              <option value="parttime">Part Time</option> 
+              <option value="">Pilih Jenis Kontrak</option>
+              <option value="fulltime">Full Time</option>
+              <option value="parttime">Part Time</option>
             </select>
           )}
         />
       </div>
-   
+
       <div>
         <label className="block mb-1">Golongan BPJS</label>
         <div className="flex space-x-4">
@@ -166,15 +190,15 @@ export default function ContractCard({
             name={`contracts.${contractIndex}.healthBpjs`}
             control={control}
             render={({ field }) => (
-              <label className="flex items-center"> 
+              <label className="flex items-center">
                 <input
                   type="checkbox"
-                  checked={field.value || false} 
+                  checked={field.value || false}
                   onChange={(e) => field.onChange(e.target.checked)}
                   className="mr-2"
                 />
                 Kesehatan
-              </label> 
+              </label>
             )}
           />
           <Controller
@@ -194,7 +218,7 @@ export default function ContractCard({
           />
         </div>
       </div>
-  
+
       <div>
         <label className="block mb-1">Minimum Jam Per Bulan</label>
         <Controller
@@ -211,7 +235,6 @@ export default function ContractCard({
         />
       </div>
 
-  
       <div>
         <label className="block mb-1">Posisi</label>
         <Controller
@@ -258,10 +281,18 @@ export default function ContractCard({
         <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-300 table-auto">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipe</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nominal</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Nama
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Tipe
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Nominal
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Aksi
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -272,7 +303,11 @@ export default function ContractCard({
                     name={`contracts.${contractIndex}.incomes.${incomeIndex}.name`}
                     control={control}
                     render={({ field }) => (
-                      <input {...field} className="border p-2 rounded w-full" placeholder="Nama" />
+                      <input
+                        {...field}
+                        className="border p-2 rounded w-full"
+                        placeholder="Nama"
+                      />
                     )}
                   />
                 </td>
@@ -281,7 +316,11 @@ export default function ContractCard({
                     name={`contracts.${contractIndex}.incomes.${incomeIndex}.type`}
                     control={control}
                     render={({ field }) => (
-                      <input {...field} className="border p-2 rounded w-full" placeholder="Tipe" />
+                      <input
+                        {...field}
+                        className="border p-2 rounded w-full"
+                        placeholder="Tipe"
+                      />
                     )}
                   />
                 </td>
@@ -299,12 +338,12 @@ export default function ContractCard({
                       />
                     )}
                   />
-                </td>               
-                <td className="px-6 py-4 whitespace-nowrap">             
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
                   <FiTrash
-                        className="text-red-500 hover:text-red-700 cursor-pointer"
-                        onClick={() => removeIncome(incomeIndex)}
-                      />
+                    className="text-red-500 hover:text-red-700 cursor-pointer"
+                    onClick={() => removeIncome(incomeIndex)}
+                  />
                 </td>
               </tr>
             ))}
@@ -312,14 +351,11 @@ export default function ContractCard({
               <td className="px-6 py-4 font-semibold" colSpan={3}>
                 Total Pendapatan
               </td>
-              <td className="px-6 py-4 font-semibold">
-                Rp {totalIncome}
-              </td>
+              <td className="px-6 py-4 font-semibold">Rp {totalIncome}</td>
             </tr>
           </tbody>
         </table>
       </div>
-
 
       <div className="col-span-2 border rounded-lg p-4 shadow-md mt-4 bg-gray-50">
         <div className="flex items-center justify-between border-b pb-2 mb-4">
@@ -336,10 +372,18 @@ export default function ContractCard({
         <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-300 table-auto">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipe</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nominal</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Nama
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Tipe
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Nominal
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                Aksi
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -350,7 +394,11 @@ export default function ContractCard({
                     name={`contracts.${contractIndex}.deductions.${deductionIndex}.name`}
                     control={control}
                     render={({ field }) => (
-                      <input {...field} className="border p-2 rounded w-full" placeholder="Nama" />
+                      <input
+                        {...field}
+                        className="border p-2 rounded w-full"
+                        placeholder="Nama"
+                      />
                     )}
                   />
                 </td>
@@ -359,7 +407,11 @@ export default function ContractCard({
                     name={`contracts.${contractIndex}.deductions.${deductionIndex}.type`}
                     control={control}
                     render={({ field }) => (
-                      <input {...field} className="border p-2 rounded w-full" placeholder="Tipe" />
+                      <input
+                        {...field}
+                        className="border p-2 rounded w-full"
+                        placeholder="Tipe"
+                      />
                     )}
                   />
                 </td>
@@ -378,11 +430,11 @@ export default function ContractCard({
                     )}
                   />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">             
+                <td className="px-6 py-4 whitespace-nowrap">
                   <FiTrash
-                        className="text-red-500 hover:text-red-700 cursor-pointer"
-                        onClick={() => removeDeduction(deductionIndex)}
-                      />
+                    className="text-red-500 hover:text-red-700 cursor-pointer"
+                    onClick={() => removeDeduction(deductionIndex)}
+                  />
                 </td>
               </tr>
             ))}
@@ -390,9 +442,7 @@ export default function ContractCard({
               <td className="px-6 py-4 font-semibold" colSpan={3}>
                 Total Potongan
               </td>
-              <td className="px-6 py-4 font-semibold">
-                Rp {totalDeduction}
-              </td>
+              <td className="px-6 py-4 font-semibold">Rp {totalDeduction}</td>
             </tr>
           </tbody>
         </table>
@@ -401,7 +451,9 @@ export default function ContractCard({
       <div className="col-span-2 flex justify-end mt-4">
         <Button
           onClick={() => {
-            if (window.confirm("Apakah Anda yakin ingin menghapus kontrak ini?")) {
+            if (
+              window.confirm("Apakah Anda yakin ingin menghapus kontrak ini?")
+            ) {
               removeContract(contractIndex);
             }
           }}
