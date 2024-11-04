@@ -36,7 +36,7 @@ export default function RootLayout({
 
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
-    { label: 'Data User', href: '/data-user' },
+    { label: 'Data User', href: '/' },
   ];
 
   return (
@@ -78,7 +78,7 @@ export default function RootLayout({
                 <nav>
                   <ul>
                     <li className="mb-2">
-                      <Link href="/data-user" className={`block py-2 px-4 rounded hover:bg-gray-700 ${sidebarCollapsed ? 'hidden' : ''}`}>
+                      <Link href="/" className={`block py-2 px-4 rounded hover:bg-gray-700 ${sidebarCollapsed ? 'hidden' : ''}`}>
                         Data User 
                       </Link>
                     </li>
