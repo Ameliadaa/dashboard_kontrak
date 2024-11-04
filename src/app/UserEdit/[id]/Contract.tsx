@@ -4,21 +4,6 @@ import ContractCard from "../../../components/ContractCard";
 import Button from "@/components/Button";
 import { IoMdAdd } from "react-icons/io";
 
-interface ContractFormData {
-  startDate: string;
-  endDate: string;
-  vacationAmount: string;
-  taxType: string;
-  contractType: string;
-  employmentBpjs: boolean;
-  healthBpjs: boolean;
-  askes: boolean;
-  minWorkingHour: number | "";
-  position: string;
-  note: string;
-  incomes: { name: string; type: string; nominal: number | "" }[];
-  deductions: { name: string; type: string; nominal: number | "" }[];
-}
 
 export default function Contract() {
   const { control } = useFormContext();
