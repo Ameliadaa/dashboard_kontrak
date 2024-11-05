@@ -200,10 +200,10 @@ const ProfileForm = () => {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                 >
                   <option value="">Pilih Bank</option>
-                  <option value="1">BNI</option>
-                  <option value="2">BCA</option>
-                  <option value="3">Mandiri</option>
-                  <option value="4">BSI</option>
+                  <option value="BNI">BNI</option>
+                  <option value="BCA">BCA</option>
+                  <option value="Mandiri">Mandiri</option>
+                  <option value="BSI">BSI</option>
                 </select>
 
                 <label className="block text-sm font-medium text-gray-700 mt-4">

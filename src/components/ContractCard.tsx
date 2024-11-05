@@ -1,8 +1,15 @@
+
 import { useFieldArray, Controller, useFormContext } from "react-hook-form";
 import { IoMdAdd } from "react-icons/io";
 import Button from "@/components/Button";
-import { useEffect, useState } from "react";
 import { FiTrash } from "react-icons/fi";
+import Swal from 'sweetalert2';
+
+interface IncomeDeductionItem {
+  name: string;
+  type: string;
+  nominal: number;
+}
 
 interface ContractCardProps {
   contractIndex: number;
@@ -13,49 +20,23 @@ export default function ContractCard({
   contractIndex,
   removeContract,
 }: ContractCardProps) {
-  const { control, watch } = useFormContext();
-  const [totalDeduction, setTotalDeduction] = useState(0);
-  const [totalIncome, setTotalIncome] = useState(0);
+  const { control, watch } = useFormContext(); 
 
-  useEffect (  () =>  {
-
-  }, [totalIncome] )
-
-  const {
-    fields: incomeFields,
-    append: addIncome,
-    remove: removeIncome,
-  } = useFieldArray({
+  const { fields: incomeFields, append: appendIncome, remove: removeIncome } = useFieldArray({
     control,
     name: `contracts.${contractIndex}.incomes`,
   });
 
-  const {
-    fields: deductionFields,
-    append: addDeduction,
-    remove: removeDeduction,
-  } = useFieldArray({
+  const { fields: deductionFields, append: appendDeduction, remove: removeDeduction } = useFieldArray({
     control,
     name: `contracts.${contractIndex}.deductions`,
   });
 
-  const incomes = watch(`contracts.${contractIndex}.incomes`);
-  const deductions = watch(`contracts.${contractIndex}.deductions`);
+  const incomes = watch(`contracts.${contractIndex}.incomes`) as IncomeDeductionItem[] || [];
+  const deductions = watch(`contracts.${contractIndex}.deductions`) as IncomeDeductionItem[] || [];
 
-  
-
-  const calculateTotal = (items: { nominal: number | "" }[]) => {
-    return items?.reduce((acc, item) => acc + (Number(item.nominal) || 0), 0);
-  };
-
-  console.log ( "its render",  incomes);
-  useEffect(() => {
-        setTotalIncome(calculateTotal(incomes));
-  }, [incomes]);
-
-  useEffect(() => {
-    setTotalDeduction(calculateTotal(deductions));
-  }, [deductions]);
+  const totalIncome = incomes.reduce((total: number, item: IncomeDeductionItem) => total + Number(item.nominal || 0), 0);
+  const totalDeduction = deductions.reduce((total: number, item: IncomeDeductionItem) => total + Number(item.nominal || 0), 0);
 
   return (
     <div className="grid grid-cols-2 gap-4 mb-4 p-4 border border-gray-300 rounded-md">
@@ -118,8 +99,9 @@ export default function ContractCard({
           render={({ field }) => (
             <select {...field} className="w-full border p-2 rounded">
               <option value="">Pilih Cuti Tahunan</option>
-              <option value="12">12 Hari</option>
-              <option value="14">14 Hari</option>
+              {Array.from({ length: 12 }, (_, i) => (
+                <option key={i + 1} value={i + 1}>{i + 1} Hari</option>
+              ))}
             </select>
           )}
         />
@@ -161,6 +143,8 @@ export default function ContractCard({
           render={({ field }) => (
             <select {...field} className="w-full border p-2 rounded">
               <option value="">Pilih Jenis Kontrak</option>
+              <option value="tetap">Tetap</option>
+              <option value="freelance">Freelance</option>
               <option value="fulltime">Full Time</option>
               <option value="parttime">Part Time</option>
             </select>
@@ -245,6 +229,11 @@ export default function ContractCard({
               <option value="">Pilih Posisi</option>
               <option value="FE">Front-End Developer</option>
               <option value="BE">Back-End Developer</option>
+              <option value="PM">Project Manager</option>
+              <option value="SAdmin">System Admin</option>
+              <option value="SA">System Analyst</option>
+              <option value="Content Writer">Content Writer</option>
+              <option value="HRD">HR Manager</option>
             </select>
           )}
         />
@@ -266,11 +255,12 @@ export default function ContractCard({
         />
       </div>
 
+      {/* Income Table */}
       <div className="col-span-2 border rounded-lg p-4 shadow-md mt-4 bg-gray-50">
         <div className="flex items-center justify-between border-b pb-2 mb-4">
           <h3 className="text-lg font-semibold">Pendapatan</h3>
           <Button
-            onClick={() => addIncome({ name: "", type: "", nominal: "" })}
+            onClick={() => appendIncome({ name: "", type: "", nominal: 0 })}
             className="bg-purple-600 text-white py-1 rounded hover:bg-purple-700 w-1/5 flex items-center justify-end"
           >
             <IoMdAdd className="mx-2" />
@@ -281,50 +271,44 @@ export default function ContractCard({
         <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-300 table-auto">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Nama
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Tipe
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Nominal
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Aksi
-              </th>
+              <th className="px-6 py-3 text-left text-xs border-r border-gray-300 font-medium text-gray-500 uppercase">Nama</th>
+              <th className="px-6 py-3 text-left text-xs border-r border-gray-300 font-medium text-gray-500 uppercase">Tipe</th>
+              <th className="px-6 py-3 text-left text-xs border-r border-gray-300 font-medium text-gray-500 uppercase">Nominal</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"></th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {incomeFields.map((income, incomeIndex) => (
               <tr key={income.id}>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap border-r border-gray-300">
                   <Controller
                     name={`contracts.${contractIndex}.incomes.${incomeIndex}.name`}
                     control={control}
                     render={({ field }) => (
-                      <input
-                        {...field}
-                        className="border p-2 rounded w-full"
-                        placeholder="Nama"
-                      />
+                      <select {...field} className="border p-2 rounded w-full">
+                        <option value="">Pilih Nama</option>
+                        <option value="GajiPokok">Gaji Pokok</option>
+                        <option value="Tunjangan1">Tunjangan Performa</option>
+                        <option value="Tunjangan2">Bonus</option>
+                      </select>
                     )}
                   />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap border-r border-gray-300">
                   <Controller
                     name={`contracts.${contractIndex}.incomes.${incomeIndex}.type`}
                     control={control}
                     render={({ field }) => (
-                      <input
-                        {...field}
-                        className="border p-2 rounded w-full"
-                        placeholder="Tipe"
-                      />
+                      <select {...field} className="border p-2 rounded w-full">
+                        <option value="">Pilih Tipe</option>
+                        <option value="A">Tipe A</option>
+                        <option value="B">Tipe B</option>
+                        <option value="SO">Sales Overreach</option>
+                      </select>
                     )}
                   />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap border-r border-gray-300">
                   <Controller
                     name={`contracts.${contractIndex}.incomes.${incomeIndex}.nominal`}
                     control={control}
@@ -334,7 +318,6 @@ export default function ContractCard({
                         type="number"
                         className="border p-2 rounded w-full"
                         placeholder="Nominal"
-                        onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     )}
                   />
@@ -348,20 +331,19 @@ export default function ContractCard({
               </tr>
             ))}
             <tr>
-              <td className="px-6 py-4 font-semibold" colSpan={3}>
-                Total Pendapatan
-              </td>
+              <td className="px-6 py-4 font-semibold border-r border-gray-300" colSpan={2}>Total Pendapatan</td>
               <td className="px-6 py-4 font-semibold">Rp {totalIncome}</td>
             </tr>
           </tbody>
         </table>
       </div>
 
+      {/* Deduction Table */}
       <div className="col-span-2 border rounded-lg p-4 shadow-md mt-4 bg-gray-50">
         <div className="flex items-center justify-between border-b pb-2 mb-4">
           <h3 className="text-lg font-semibold">Potongan</h3>
           <Button
-            onClick={() => addDeduction({ name: "", type: "", nominal: "" })}
+            onClick={() => appendDeduction({ name: "", type: "", nominal: 0 })}
             className="bg-purple-600 text-white py-1 rounded hover:bg-purple-700 w-1/5 flex items-center justify-end"
           >
             <IoMdAdd className="mx-2" />
@@ -372,50 +354,44 @@ export default function ContractCard({
         <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-300 table-auto">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Nama
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Tipe
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Nominal
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Aksi
-              </th>
+              <th className="px-6 py-3 text-left text-xs border-r border-gray-300 font-medium text-gray-500 uppercase">Nama</th>
+              <th className="px-6 py-3 text-left text-xs border-r border-gray-300 font-medium text-gray-500 uppercase">Tipe</th>
+              <th className="px-6 py-3 text-left text-xs border-r border-gray-300 font-medium text-gray-500 uppercase">Nominal</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"></th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {deductionFields.map((deduction, deductionIndex) => (
               <tr key={deduction.id}>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap border-r border-gray-300">
                   <Controller
                     name={`contracts.${contractIndex}.deductions.${deductionIndex}.name`}
                     control={control}
-                    render={({ field }) => (
-                      <input
-                        {...field}
-                        className="border p-2 rounded w-full"
-                        placeholder="Nama"
-                      />
+                    render={({ field }) => (                     
+                      <select {...field} className="border p-2 rounded w-full">
+                        <option value="">Pilih Nama</option>
+                        <option value="BPJS">BPJS</option>
+                        <option value="BPJSTK">BPJSTK</option>                        
+                      </select>
                     )}
                   />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap border-r border-gray-300">
                   <Controller
                     name={`contracts.${contractIndex}.deductions.${deductionIndex}.type`}
                     control={control}
                     render={({ field }) => (
-                      <input
-                        {...field}
-                        className="border p-2 rounded w-full"
-                        placeholder="Tipe"
-                      />
+                      <select
+                      {...field}
+                      className="border p-2 rounded w-full"> 
+                        <option value="">Pilih Tipe</option>
+                        <option value="Pegawai">Pegawai</option>
+                        <option value="Pajak">Pajak</option>
+                    </select>
                     )}
                   />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-nowrap border-r border-gray-300">
                   <Controller
                     name={`contracts.${contractIndex}.deductions.${deductionIndex}.nominal`}
                     control={control}
@@ -425,7 +401,6 @@ export default function ContractCard({
                         type="number"
                         className="border p-2 rounded w-full"
                         placeholder="Nominal"
-                        onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     )}
                   />
@@ -439,9 +414,7 @@ export default function ContractCard({
               </tr>
             ))}
             <tr>
-              <td className="px-6 py-4 font-semibold" colSpan={3}>
-                Total Potongan
-              </td>
+              <td className="px-6 py-4 font-semibold border-r border-gray-300" colSpan={2}>Total Potongan</td>
               <td className="px-6 py-4 font-semibold">Rp {totalDeduction}</td>
             </tr>
           </tbody>
@@ -450,11 +423,24 @@ export default function ContractCard({
 
       <div className="col-span-2 flex justify-end mt-4">
         <Button
-          onClick={() => {
-            if (
-              window.confirm("Apakah Anda yakin ingin menghapus kontrak ini?")
-            ) {
+          onClick={async () => {
+            const result = await Swal.fire({
+              title: "Apakah kamu yakin?",
+              text: "Kontrak ini akan dihapus dan tidak dapat dikembalikan!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Ya, Hapus!",
+            });
+
+            if (result.isConfirmed) {
               removeContract(contractIndex);
+              Swal.fire({
+                title: "Terhapus!",
+                text: "Kontrak telah berhasil terhapus",
+                icon: "success",
+              });
             }
           }}
           className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700"

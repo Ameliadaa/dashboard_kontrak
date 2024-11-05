@@ -69,7 +69,7 @@ export default function RootLayout({
             <aside
               className={`fixed md:relative bg-gray-900 text-white inset-y-0 left-0 transition-all duration-300 transform ${
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-              } md:translate-x-0 ${sidebarCollapsed ? 'w-16' : 'w-64'}`}
+              } md:translate-x-0 ${sidebarCollapsed ? 'w-16' : 'w-64'}`}          
             >
               <div className="p-4 px-6 pt-16">
                 <h4 className={`text-base font-normal mb-6 ${sidebarCollapsed ? 'hidden' : ''}`}>
