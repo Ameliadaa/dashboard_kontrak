@@ -67,7 +67,7 @@ export default function RootLayout({
 
           <div className="flex flex-1 bg-gray-100">
             <aside
-              className={`fixed md:relative bg-gray-900 text-white inset-y-0 left-0 transition-all duration-300 transform ${
+              className={`fixed  bg-gray-900 text-white inset-y-0 left-0  transition-all duration-300 transform ${
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full'
               } md:translate-x-0 ${sidebarCollapsed ? 'w-16' : 'w-64'}`}          
             >
@@ -87,7 +87,7 @@ export default function RootLayout({
               </div>
             </aside>
 
-            <main className={`flex-1 p-6 ${sidebarCollapsed ? 'ml-auto py-16' : 'ml-auto py-16'}`}>
+            <main className={`flex-1 p-6 ${sidebarCollapsed ? 'ml-auto md:ml-16 py-16' : 'ml-auto md:ml-64 py-16'}`}>
               {children}
             </main>
           </div>

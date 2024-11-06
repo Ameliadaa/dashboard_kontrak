@@ -39,7 +39,9 @@ export default function ContractCard({
   const totalDeduction = deductions.reduce((total: number, item: IncomeDeductionItem) => total + Number(item.nominal || 0), 0);
 
   return (
-    <div className="grid grid-cols-2 gap-4 mb-4 p-4 border border-gray-300 rounded-md">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4 p-4 border border-gray-300 rounded-md">
+
+      
       <div>
         <label className="block mb-1">
           Masa Berlaku<span className="text-red-500">*</span>
@@ -451,3 +453,5 @@ export default function ContractCard({
     </div>
   );
 }
+
+
