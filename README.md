@@ -6,7 +6,8 @@ Langkah - langkah Menjalankan Aplikasi
     => akses internet untuk menghubungkan ke API Mockoon Online
 
 2. Instalasi 
-    1. Download folder aplikasi ke komputer
+    1. Download folder aplikasi ke komputer atau clone repository github dengan URL : 
+        => https://github.com/Ameliadaa/dashboard_kontrak.git 
     2. Masuk ke folder aplikasi => `cd folder-aplikasi`
     3. Install depedensi dengan perintah :
         => `npm install`
