@@ -49,7 +49,7 @@ $ npm install
 
 6. Menggunakan Mockoon secara lokal <b><i>(opsional)</i></b> :
    - ekspor file JSON dari mockoon (https://mockoon.tongkolspace.com/users)
-   - import file `.json` ke dalam aplikasi mockoon lokal 
+   - import file `.json` ke dalam aplikasi mockoon lokal / import file `Mockoon.json` ke dalam mockon lokal.
     
 ## Deploy on Vercel
 Jika ingin menjalankan aplikasi tanpa perlu menyiapkan aplikasi di lokal, bisa mengunjungi aplikasi yang sudah dideploy di Vercel:
