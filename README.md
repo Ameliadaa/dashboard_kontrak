@@ -1,9 +1,12 @@
+![image](https://github.com/user-attachments/assets/455060be-2cbc-46ce-a5da-fa04e73b423b) 
+
+
 ## Getting Started
 Langkah - langkah Menjalankan Aplikasi
 
 1. sistem 
-    => menggunakan Node.js versi terbaru
-    => akses internet untuk menghubungkan ke API Mockoon Online
+   <br>menggunakan Node.js versi terbaru
+   <br>akses internet untuk menghubungkan ke API Mockoon Online
 
 2. Instalasi 
     1. Download folder aplikasi ke komputer atau clone repository github dengan URL : 
